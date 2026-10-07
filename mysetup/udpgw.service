@@ -1,0 +1,13 @@
+[Unit]
+Description=UDPGW Gateway (127.0.0.1:7800)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/udpgw --listen-addr 127.0.0.1:7800 --max-clients 1000 --max-connections-for-client 100
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

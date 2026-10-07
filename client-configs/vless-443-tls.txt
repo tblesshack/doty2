@@ -1,0 +1,7 @@
+VLESS + TLS on 443 (universal TLS via sslh) — PRIMARY
+=====================================================
+vless://<VLESS_UUID>@<SERVER2_IP>:443?security=tls&type=tcp&sni=redbuntu.duckdns.org&allowInsecure=1&fp=chrome#TBLESS-VLESS-443
+
+Manual:
+  address <SERVER2_IP> | port 443 | uuid <VLESS_UUID>
+  transport tcp | security tls | sni redbuntu.duckdns.org | allowInsecure ON | flow none

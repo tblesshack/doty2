@@ -1,0 +1,10 @@
+Trojan + TLS on 443 (universal TLS via sslh) — PRIMARY
+=====================================================
+trojan://<PASSWORD>@<SERVER2_IP>:443?path=/trojan&security=tls&encryption=none&host=redbuntu.duckdns.org&type=ws&sni=redbuntu.duckdns.org&allowInsecure=1#TBLESS-TROJAN-443
+trojan://<PASSWORD>@<SERVER2_IP>:80?path=/trojan&encryption=none&security=none&host=redbuntu.duckdns.org&type=ws#TBLESS-TROJAN-80
+trojan://<PASSWORD>@<SERVER2_IP>:443?path=/trojan-grpc&security=tls&encryption=none&host=redbuntu.duckdns.org&type=grpc&serviceName=trojan-grpc&sni=redbuntu.duckdns.org&allowInsecure=1#TBLESS-TROJAN-GRPC
+
+Manual:
+  address <SERVER2_IP> | password <PASSWORD> | ws path /trojan (443 TLS / 80 NTLS) | grpc trojan-grpc (443 TLS)
+  sni redbuntu.duckdns.org | allowInsecure ON for TLS (self-signed)
+Note: panel-created users get per-user passwords — same ports/paths.

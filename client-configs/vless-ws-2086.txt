@@ -1,0 +1,7 @@
+VLESS + WebSocket on 2086 (plain, no TLS)
+=========================================
+vless://<VLESS_UUID>@<SERVER2_IP>:2086?type=ws&security=none&path=%2Fvless&host=<SERVER2_IP>#TBLESS-VLESS-WS-2086
+
+Manual:
+  address <SERVER2_IP> | port 2086 | uuid <VLESS_UUID>
+  transport websocket | path /vless | tls OFF

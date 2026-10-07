@@ -1,0 +1,14 @@
+#!/bin/bash
+# set the custom domain EVERYWHERE atomically:
+# /etc/xray/domain, all nginx server_name lines, xray cert CN (+restart)
+set -e
+D="$1"
+[[ -z "$D" ]] && { echo "usage: set-domain your.domain.com"; exit 1; }
+echo "$D" > /etc/xray/domain
+sed -i "s/server_name .*;/server_name *.$D $D;/g" /etc/nginx/conf.d/doty.conf
+nginx -t >/dev/null 2>&1 && systemctl reload nginx
+openssl req -x509 -newkey rsa:2048 -keyout /etc/xray/xray.key -out /etc/xray/xray.crt -days 3650 -nodes -subj "/CN=$D" 2>/dev/null
+U=$(systemctl show xray -p User --value); U=${U:-www-data}
+chown "$U:$U" /etc/xray/xray.key /etc/xray/xray.crt && chmod 640 /etc/xray/xray.key
+systemctl restart xray
+echo "✔ domain set to $D (nginx + cert + /etc/xray/domain) — update client SNI in links"

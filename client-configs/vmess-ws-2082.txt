@@ -1,0 +1,7 @@
+VMess + WebSocket on 2082 (plain, no TLS)
+=========================================
+vmess://eyJ2IjogIjIiLCAicHMiOiAiVEJMRVNTLVZNRVNTLVdTLTIwODIiLCAiYWRkIjogIjE5OC41OC4xMDQuMTg3IiwgInBvcnQiOiAiMjA4MiIsICJpZCI6ICI3ZDk2N2YxYS05NzJlLTRkZjItYWQ2OC1hZjIxZGM0NDZmMjAiLCAiYWlkIjogIjAiLCAibmV0IjogIndzIiwgInR5cGUiOiAibm9uZSIsICJob3N0IjogIjE5OC41OC4xMDQuMTg3IiwgInBhdGgiOiAiL3ZtZXNzIiwgInRscyI6ICIifQ==
+
+Manual:
+  address <SERVER2_IP> | port 2082 | uuid <VMESS_UUID>
+  alterId 0 | transport websocket | path /vmess | tls OFF

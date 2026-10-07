@@ -1,0 +1,593 @@
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "dnsLog": false,
+    "error": "/var/log/xray/error.log",
+    "loglevel": "info",
+    "maskAddress": ""
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      {
+        "type": "field",
+        "inboundTag": [
+          "inbound-127.0.0.1:1003"
+        ],
+        "port": "53",
+        "network": "tcp,udp",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "inboundTag": [
+          "inbound-127.0.0.1:1003"
+        ],
+        "outboundTag": "proton"
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "ip": [
+          "geoip:private"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ]
+      }
+    ]
+  },
+  "dns": {
+    "servers": [
+      "localhost",
+      "https://dns.google/dns-query",
+      "https://cloudflare-dns.com/dns-query"
+    ],
+    "tag": "dns-in"
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 8443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "<VLESS_UUID>",
+            "email": "tbless22-direct"
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "alpn": "h2",
+            "dest": "127.0.0.1:1003"
+          },
+          {
+            "path": "/trojan",
+            "dest": "127.0.0.1:1001"
+          },
+          {
+            "path": "/htrojan",
+            "dest": "127.0.0.1:1002"
+          },
+          {
+            "path": "/vmess",
+            "dest": "127.0.0.1:2001"
+          },
+          {
+            "path": "/hvmess",
+            "dest": "127.0.0.1:2002"
+          },
+          {
+            "path": "/vless",
+            "dest": "127.0.0.1:3001"
+          },
+          {
+            "path": "/hvless",
+            "dest": "127.0.0.1:3002"
+          },
+          {
+            "dest": "127.0.0.1:22"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "certificates": [
+            {
+              "certificateFile": "/etc/xray/xray.crt",
+              "keyFile": "/etc/xray/xray.key"
+            }
+          ]
+        }
+      },
+      "tag": "vless-direct-8443",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 62789,
+      "protocol": "tunnel",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "streamSettings": null,
+      "tag": "api",
+      "sniffing": null
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1001,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "<PASSWORD>"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "26hf"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "thd5"
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "heartbeatPeriod": 0,
+          "host": "",
+          "path": "/trojan"
+        }
+      },
+      "tag": "inbound-127.0.0.1:1001",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1002,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "<PASSWORD>"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "26hf"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "thd5"
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "httpupgradeSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "host": "",
+          "path": "/htrojan"
+        },
+        "network": "httpupgrade",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:1002",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1003,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "<PASSWORD>"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "26hf"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "thd5"
+          }
+        ],
+        "fallbacks": []
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "trojan-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:1003",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2001,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+          },
+          {
+            "id": "<VMESS_UUID>",
+            "alterId": 0,
+            "email": "thabiso80"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "heartbeatPeriod": 0,
+          "host": "",
+          "path": "/vmess"
+        }
+      },
+      "tag": "inbound-127.0.0.1:2001",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2002,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+          },
+          {
+            "id": "<VMESS_UUID>",
+            "alterId": 0,
+            "email": "thabiso80"
+          }
+        ]
+      },
+      "streamSettings": {
+        "httpupgradeSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "host": "",
+          "path": "/hvmess"
+        },
+        "network": "httpupgrade",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:2002"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2003,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+          },
+          {
+            "id": "<VMESS_UUID>",
+            "alterId": 0,
+            "email": "thabiso80"
+          }
+        ]
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "vmess-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:2003"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+          },
+          {
+            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
+            "email": "lethabo"
+          },
+          {
+            "id": "<VLESS_UUID>",
+            "email": "tbless22"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/vless"
+        }
+      },
+      "tag": "inbound-127.0.0.1:3001"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3002,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+          },
+          {
+            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
+            "email": "lethabo"
+          },
+          {
+            "id": "<VLESS_UUID>",
+            "email": "tbless22"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "httpupgrade",
+        "security": "none",
+        "httpupgradeSettings": {
+          "path": "/hvless"
+        }
+      },
+      "tag": "inbound-127.0.0.1:3002"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3003,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+          },
+          {
+            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
+            "email": "lethabo"
+          },
+          {
+            "id": "<VLESS_UUID>",
+            "email": "tbless22"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "grpcSettings": {
+          "authority": "",
+          "multiMode": false,
+          "serviceName": "vless-grpc"
+        },
+        "network": "grpc",
+        "security": "none"
+      },
+      "tag": "inbound-127.0.0.1:3003"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1004,
+      "protocol": "trojan",
+      "settings": {
+        "clients": [
+          {
+            "password": "<PASSWORD>"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "26hf"
+          },
+          {
+            "password": "<TROJAN_PASSWORD>",
+            "email": "thd5"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xtrojan",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:1004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 2004,
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx",
+            "alterId": 0
+          },
+          {
+            "id": "<VMESS_UUID>",
+            "alterId": 0,
+            "email": "thabiso80"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xvmess",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:2004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 3004,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "xxxxxx"
+          },
+          {
+            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
+            "email": "lethabo"
+          },
+          {
+            "id": "<VLESS_UUID>",
+            "email": "tbless22"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "path": "/xvless",
+          "host": ""
+        }
+      },
+      "tag": "inbound-127.0.0.1:3004",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "proton",
+      "protocol": "freedom",
+      "settings": {},
+      "streamSettings": {
+        "sockopt": {
+          "interface": "tun9"
+        }
+      }
+    },
+    {
+      "tag": "dns-out",
+      "protocol": "dns"
+    },
+    {
+      "tag": "blocked",
+      "protocol": "blackhole",
+      "settings": {}
+    }
+  ]
+}

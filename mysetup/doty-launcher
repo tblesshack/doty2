@@ -1,0 +1,3 @@
+#!/bin/bash
+# DOTYCAT panel launcher
+exec /usr/local/sbin/menu "$@"

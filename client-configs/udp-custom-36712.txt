@@ -1,0 +1,6 @@
+UDP Custom (ePro) on 36712
+==========================
+Host: <SERVER2_IP>   Port: 36712 (UDP)
+Login: system users (create via panel; /bin/false shell)
+Tip: on Rain/CGNAT set app keepalive to 10-20s
+Note: server unit not yet installed (see README)

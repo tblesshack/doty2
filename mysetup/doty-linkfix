@@ -1,0 +1,6 @@
+#!/bin/bash
+# doty-linkfix: append allowInsecure=1 to TLS links missing it.
+# The server uses a self-signed cert, so clients need the skip-verify flag.
+# Port rule is TLS -> 443, NTLS -> 80 (no port rewrite needed).
+# $|=1 keeps interactive manager prompts flowing (no block buffering).
+perl -pe 'BEGIN{$|=1} s/#([^#]*)$/\&allowInsecure=1#$1/ if /security=tls/ && !/allowInsecure/'

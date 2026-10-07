@@ -1,0 +1,8 @@
+VLESS + WebSocket NTLS on 80 — PRIMARY NTLS (TLS->443, NTLS->80)
+=========================================================================
+vless://<VLESS_UUID>@<SERVER2_IP>:80?type=ws&security=none&path=%2Fvless&host=redbuntu.duckdns.org#TBLESS-VLESS-WS-80
+
+Manual:
+  address <SERVER2_IP> | port 80 | uuid <VLESS_UUID>
+  transport websocket | path /vless | host redbuntu.duckdns.org | tls OFF
+Aliases: 88 (=80) direct; 2086 (NTLS) / 2087 (TLS) vless-direct.

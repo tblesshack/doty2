@@ -1,0 +1,27 @@
+VLESS TLS: 443 (universal TLS — tcp direct + ws /vless + grpc)
+VLESS NTLS: 80 (ws /vless)
+VLESS REALITY: 853 (vodacom) 854 (tiktok)
+VMESS TLS: 443 (universal TLS — ws /vmess + grpc)
+VMESS NTLS: 80 (ws /vmess)
+TROJAN TLS: 443 (universal TLS — ws /trojan + grpc trojan-grpc) + 444
+TROJAN GRPC→USA: 443 (serviceName trojan-grpc, exits ProtonVPN 217.138.213.x)
+TUIC UDP: 443
+UDP-CUSTOM: 36712
+ZIVPN UDP: 5667
+OPENVPN TCP: 1194
+OPENVPN UDP: 2200
+SSH DIRECT: 22
+SSH DROPBEAR: 6422
+SSH-SSL: 443 (sslh→xray fallback→sshd)
+SSH-WS: 80 (path /) · 2080 (ws-com)
+UDPGW: 7300 7800 (localhost)
+
+ARCHITECTURE:
+443/tcp─sslh─SSH─▶sshd:22
+       └─TLS─▶xray:8443─VLESS native
+              ├─h2─▶trojan-grpc:1003─▶proton(USA)
+              ├─/trojan─▶1001 · /vmess─▶2001 · /vless─▶3001
+              └─default─▶sshd:22 (SSH-SSL)
+80/tcp──nginx──WS paths─▶1001-3004 · / ─▶ws.py:700─▶dropbear:6422
+444/tcp─nginx─TLS WS+gRPC─▶1001-3004
+443/udp─tuic · 36712─udp-custom · 5667─zivpn · 1194,2200─openvpn

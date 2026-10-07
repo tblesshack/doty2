@@ -1,0 +1,10 @@
+VLESS+REALITY configs
+=====================
+pbk (public key): <REALITY_PUBLIC_KEY>
+sid (short id):   a1b2c3d4
+uuid:             <VLESS_UUID>
+flow:             xtls-rprx-vision · fingerprint: chrome
+
+vless://<VLESS_UUID>@<SERVER2_IP>:853?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.vodacom.co.za&fp=chrome&pbk=<REALITY_PUBLIC_KEY>&sid=a1b2c3d4&type=tcp#TBLESS-REALITY-vodacom
+
+vless://<VLESS_UUID>@<SERVER2_IP>:854?encryption=none&flow=xtls-rprx-vision&security=reality&sni=m.tiktok.com&fp=chrome&pbk=<REALITY_PUBLIC_KEY>&sid=a1b2c3d4&type=tcp#TBLESS-REALITY-tiktok

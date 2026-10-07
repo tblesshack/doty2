@@ -1,0 +1,6 @@
+SSH over SSL on 443 (HTTP Custom / ePro) — xray fallback to sshd
+================================================================
+Host: <SERVER2_IP>   Port: 443   SSL/TLS: ON (any SNI except redbuntu.duckdns.org)
+Login: SSH system user + password (create via panel [01])
+Note: plain SSH also works on 443 (sslh), plus ports 22 and 6422 (dropbear).
+SSH-WS: NTLS http://<SERVER2_IP>:80 (path /) or redbuntu.duckdns.org:80 · direct 2080.

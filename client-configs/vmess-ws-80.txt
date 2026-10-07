@@ -1,0 +1,8 @@
+VMess + WebSocket NTLS on 80 — PRIMARY NTLS (TLS->443, NTLS->80)
+=========================================================================
+vmess://eyJ2IjogIjIiLCAicHMiOiAiVEJMRVNTLVZNRVNTLVdTLTgwIiwgImFkZCI6ICIxOTguNTguMTA0LjE4NyIsICJwb3J0IjogIjgwIiwgImlkIjogIjdkOTY3ZjFhLTk3MmUtNGRmMi1hZDY4LWFmMjFkYzQ0NmYyMCIsICJhaWQiOiAiMCIsICJuZXQiOiAid3MiLCAidHlwZSI6ICJub25lIiwgImhvc3QiOiAicmVkYnVudHUuZHVja2Rucy5vcmciLCAicGF0aCI6ICIvdm1lc3MiLCAidGxzIjogIiJ9
+
+Manual:
+  address <SERVER2_IP> | port 80 | uuid <VMESS_UUID>
+  alterId 0 | transport websocket | host redbuntu.duckdns.org | path /vmess | tls OFF
+Aliases: 88 (=80); 2082 (NTLS) / 2083 (TLS) vmess-direct.

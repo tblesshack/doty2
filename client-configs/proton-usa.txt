@@ -1,0 +1,11 @@
+TROJAN-gRPC via ProtonVPN USA exit (tun0)
+=========================================
+exit IP: 217.138.213.5 (Proton USA) — only trojan-grpc:1003 traffic is routed via tun0;
+everything else on the server exits via Oracle ZA.
+
+trojan://<TROJAN_PASSWORD>@opbless.duckdns.org:443?type=grpc&mode=gun&serviceName=trojan-grpc&security=tls&sni=www.rain.co.za&alpn=h2&allowInsecure=1#proton-usa
+
+server side:
+  outbound  "proton": freedom + sockopt interface=tun0
+  routing   inbound-127.0.0.1:1003 -> proton
+  xray.service.d/proton.conf: AmbientCapabilities=CAP_NET_RAW (SO_BINDTODEVICE)

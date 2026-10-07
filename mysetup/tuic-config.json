@@ -1,0 +1,15 @@
+{
+  "server": "[::]:443",
+  "users": {
+    "<VLESS_UUID>": "<PASSWORD>"
+  },
+  "certificate": "/etc/xray/xray.crt",
+  "private_key": "/etc/xray/xray.key",
+  "congestion_control": "bbr",
+  "alpn": [
+    "h3"
+  ],
+  "udp_relay_ipv6": false,
+  "zero_rtt_handshake": false,
+  "log_level": "info"
+}
