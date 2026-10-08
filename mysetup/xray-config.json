@@ -128,11 +128,10 @@
     {
       "listen": "127.0.0.1",
       "port": 62789,
-      "protocol": "tunnel",
+      "protocol": "dokodemo-door",
       "settings": {
         "address": "127.0.0.1"
       },
-      "streamSettings": null,
       "tag": "api",
       "sniffing": null
     },
@@ -144,14 +143,13 @@
         "clients": [
           {
             "password": "<PASSWORD>"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "26hf"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "thd5"
+#trojan
+#! thabisohappy3 2026-11-08 028be31a-bd2b-4d8b-8d2e-16e4de1e26db
+},{"password": "028be31a-bd2b-4d8b-8d2e-16e4de1e26db","email": "thabisohappy3"
+#! 26hf 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"26hf"
+#! thd5 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"thd5"
           }
         ],
         "fallbacks": []
@@ -188,14 +186,13 @@
         "clients": [
           {
             "password": "<PASSWORD>"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "26hf"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "thd5"
+#trojan
+#! thabisohappy3 2026-11-08 028be31a-bd2b-4d8b-8d2e-16e4de1e26db
+},{"password": "028be31a-bd2b-4d8b-8d2e-16e4de1e26db","email": "thabisohappy3"
+#! 26hf 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"26hf"
+#! thd5 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"thd5"
           }
         ],
         "fallbacks": []
@@ -231,14 +228,13 @@
         "clients": [
           {
             "password": "<PASSWORD>"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "26hf"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "thd5"
+#trojan
+#! thabisohappy3 2026-11-08 028be31a-bd2b-4d8b-8d2e-16e4de1e26db
+},{"password": "028be31a-bd2b-4d8b-8d2e-16e4de1e26db","email": "thabisohappy3"
+#! 26hf 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"26hf"
+#! thd5 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"thd5"
           }
         ],
         "fallbacks": []
@@ -274,11 +270,9 @@
           {
             "id": "xxxxxx",
             "alterId": 0
-          },
-          {
-            "id": "<VMESS_UUID>",
-            "alterId": 0,
-            "email": "thabiso80"
+#vmess
+### thabiso80 2027-05-08 <VMESS_UUID>
+},{"id":"<VMESS_UUID>","alterId":0,"email":"thabiso80"
           }
         ]
       },
@@ -313,11 +307,9 @@
           {
             "id": "xxxxxx",
             "alterId": 0
-          },
-          {
-            "id": "<VMESS_UUID>",
-            "alterId": 0,
-            "email": "thabiso80"
+#vmess
+### thabiso80 2027-05-08 <VMESS_UUID>
+},{"id":"<VMESS_UUID>","alterId":0,"email":"thabiso80"
           }
         ]
       },
@@ -342,11 +334,9 @@
           {
             "id": "xxxxxx",
             "alterId": 0
-          },
-          {
-            "id": "<VMESS_UUID>",
-            "alterId": 0,
-            "email": "thabiso80"
+#vmessgrpc
+### thabiso80 2027-05-08 <VMESS_UUID>
+},{"id":"<VMESS_UUID>","alterId":0,"email":"thabiso80"
           }
         ]
       },
@@ -369,14 +359,13 @@
         "clients": [
           {
             "id": "xxxxxx"
-          },
-          {
-            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
-            "email": "lethabo"
-          },
-          {
-            "id": "<VLESS_UUID>",
-            "email": "tbless22"
+#vless
+#& djjd 2026-11-08 <VLESS_UUID>
+},{"id": "<VLESS_UUID>","email": "djjd"
+#& lethabo 2027-10-09 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"lethabo"
+#& tbless22 2026-10-21 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"tbless22"
           }
         ],
         "decryption": "none"
@@ -398,14 +387,13 @@
         "clients": [
           {
             "id": "xxxxxx"
-          },
-          {
-            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
-            "email": "lethabo"
-          },
-          {
-            "id": "<VLESS_UUID>",
-            "email": "tbless22"
+#vless
+#& djjd 2026-11-08 <VLESS_UUID>
+},{"id": "<VLESS_UUID>","email": "djjd"
+#& lethabo 2027-10-09 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"lethabo"
+#& tbless22 2026-10-21 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"tbless22"
           }
         ],
         "decryption": "none"
@@ -427,14 +415,13 @@
         "clients": [
           {
             "id": "xxxxxx"
-          },
-          {
-            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
-            "email": "lethabo"
-          },
-          {
-            "id": "<VLESS_UUID>",
-            "email": "tbless22"
+#vlessgrpc
+#& djjd 2026-11-08 <VLESS_UUID>
+},{"id": "<VLESS_UUID>","email": "djjd"
+#& lethabo 2027-10-09 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"lethabo"
+#& tbless22 2026-10-21 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"tbless22"
           }
         ],
         "decryption": "none"
@@ -458,14 +445,13 @@
         "clients": [
           {
             "password": "<PASSWORD>"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "26hf"
-          },
-          {
-            "password": "<TROJAN_PASSWORD>",
-            "email": "thd5"
+#trojan
+#! thabisohappy3 2026-11-08 028be31a-bd2b-4d8b-8d2e-16e4de1e26db
+},{"password": "028be31a-bd2b-4d8b-8d2e-16e4de1e26db","email": "thabisohappy3"
+#! 26hf 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"26hf"
+#! thd5 2027-10-09 <TROJAN_PASSWORD>
+},{"password":"<TROJAN_PASSWORD>","email":"thd5"
           }
         ]
       },
@@ -497,11 +483,9 @@
           {
             "id": "xxxxxx",
             "alterId": 0
-          },
-          {
-            "id": "<VMESS_UUID>",
-            "alterId": 0,
-            "email": "thabiso80"
+#vmess
+### thabiso80 2027-05-08 <VMESS_UUID>
+},{"id":"<VMESS_UUID>","alterId":0,"email":"thabiso80"
           }
         ]
       },
@@ -532,14 +516,13 @@
         "clients": [
           {
             "id": "xxxxxx"
-          },
-          {
-            "id": "dbd7656f-e136-401b-892e-79502b106ecf",
-            "email": "lethabo"
-          },
-          {
-            "id": "<VLESS_UUID>",
-            "email": "tbless22"
+#vless
+#& djjd 2026-11-08 <VLESS_UUID>
+},{"id": "<VLESS_UUID>","email": "djjd"
+#& lethabo 2027-10-09 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"lethabo"
+#& tbless22 2026-10-21 <VLESS_UUID>
+},{"id":"<VLESS_UUID>","email":"tbless22"
           }
         ],
         "decryption": "none"
@@ -589,5 +572,14 @@
       "protocol": "blackhole",
       "settings": {}
     }
-  ]
+  ],
+  "api": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "StatsService",
+      "LoggerService"
+    ]
+  },
+  "stats": {}
 }
