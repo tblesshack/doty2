@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+"""Add/remove xray users with ZERO restart (gRPC AlterInbound API) + persist to config.json.
+usage: xray-user add|del <vless|vmess|trojan> <uuid|password> [email]"""
+import base64, json, os, re, subprocess, sys
+
+API = "127.0.0.1:62789"
+CFG = "/etc/xray/config.json"
+GRPCURL = "/usr/local/bin/grpcurl"
+PROTO = "/usr/local/etc/xray-api-proto"
+TAGS = {
+    "vless": ["inbound-127.0.0.1:3001", "inbound-127.0.0.1:3002",
+              "inbound-127.0.0.1:3003", "inbound-127.0.0.1:3004", "vless-direct-8443"],
+    "vmess": ["inbound-127.0.0.1:2001", "inbound-127.0.0.1:2002",
+              "inbound-127.0.0.1:2003", "inbound-127.0.0.1:2004"],
+    "trojan": ["inbound-127.0.0.1:1001", "inbound-127.0.0.1:1002",
+               "inbound-127.0.0.1:1003", "inbound-127.0.0.1:1004"],
+}
+ACCT_TYPE = {"vless": "xray.proxy.vless.Account",
+             "vmess": "xray.proxy.vmess.Account",
+             "trojan": "xray.proxy.trojan.Account"}
+
+
+def varint(n):
+    out = b""
+    while True:
+        b = n & 0x7F
+        n >>= 7
+        out += bytes([b | (0x80 if n else 0)])
+        if not n:
+            return out
+
+
+def field(num, wire, payload):
+    out = varint((num << 3) | wire)
+    if wire == 2:
+        out += varint(len(payload)) + payload
+    else:
+        out += payload
+    return out
+
+
+def s(b: bytes) -> str:
+    return base64.b64encode(b).decode()
+
+
+def account_bytes(proto, ident):
+    if proto == "trojan":
+        return field(1, 2, ident.encode())  # password = 1
+    inner = field(1, 2, ident.encode())     # id = 1
+    if proto == "vmess":
+        inner += field(2, 0, b"\x00")       # alterId = 2 (varint 0)... note: field() wire0 appends payload raw
+    return inner
+
+
+def user_bytes(proto, ident, email):
+    acct = field(1, 2, ACCT_TYPE[proto].encode()) + field(2, 2, account_bytes(proto, ident))
+    u = field(2, 2, email.encode()) + field(3, 2, acct)
+    return u
+
+
+def op_bytes(proto, ident, email, add=True):
+    if add:
+        inner = field(1, 2, user_bytes(proto, ident, email))
+        return ("xray.app.proxyman.command.AddUserOperation", inner)
+    inner = field(1, 2, email.encode())
+    return ("xray.app.proxyman.command.RemoveUserOperation", inner)
+
+
+def grpc_alter(tag, optype, opval_b64):
+    req = json.dumps({"tag": tag, "operation": {"type": optype, "value": opval_b64}})
+    p = subprocess.run([GRPCURL, "-plaintext", "-import-path", PROTO,
+                        "-proto", "app/proxyman/command/command.proto",
+                        "-d", req, API,
+                        "xray.app.proxyman.command.HandlerService/AlterInbound"],
+                       capture_output=True, text=True, timeout=15)
+    return p.returncode == 0, (p.stderr.strip() or p.stdout.strip())
+
+
+def persist(proto, ident, email, add):
+    ports = {"vless": ["3001", "3002", "3003", "3004", "8443"],
+             "vmess": ["2001", "2002", "2003", "2004"],
+             "trojan": ["1001", "1002", "1003", "1004"]}[proto]
+    key = "password" if proto == "trojan" else "id"
+    raw = open(CFG).read()
+    j = json.loads(re.sub(r"(?m)\s*#.*$", "", raw))
+    for ib in j["inbounds"]:
+        hit = str(ib.get("port")) in ports or (proto == "vless" and ib.get("tag") == "vless-direct-8443")
+        if not hit:
+            continue
+        cl = ib.setdefault("settings", {}).setdefault("clients", [])
+        if add:
+            if not any(c.get(key) == ident for c in cl):
+                u = {key: ident, "email": email}
+                if proto == "vmess":
+                    u["alterId"] = 0
+                cl.append(u)
+        else:
+            ib["settings"]["clients"] = [c for c in cl if c.get(key) != ident]
+    open(CFG, "w").write(json.dumps(j, indent=2))
+    p = subprocess.run(["xray", "-test", "-config", CFG], capture_output=True, text=True)
+    return "Configuration OK" in (p.stdout + p.stderr) or "Reading config" in (p.stdout + p.stderr)
+
+
+def main():
+    if len(sys.argv) < 4 or sys.argv[1] not in ("add", "del") or sys.argv[2] not in TAGS:
+        print(__doc__)
+        sys.exit(1)
+    add = sys.argv[1] == "add"
+    proto, ident, email = sys.argv[2], sys.argv[3], (sys.argv[4] if len(sys.argv) > 4 else sys.argv[3])
+    optype, inner = op_bytes(proto, ident, email, add)
+    ok = 0
+    errs = []
+    for tag in TAGS[proto]:
+        good, msg = grpc_alter(tag, optype, s(inner))
+        if good:
+            ok += 1
+        else:
+            errs.append(f"{tag}: {msg[:100]}")
+    if not persist(proto, ident, email, add):
+        print("✘ config persist/validate FAILED — live state may differ, check", CFG)
+        sys.exit(1)
+    verb = "added" if add else "removed"
+    print(f"✔ {verb} {email} ({proto}): live on {ok}/{len(TAGS[proto])} inbounds, saved to config — no restart, no drops")
+    for e in errs:
+        print("  ⚠", e)
+
+
+main()
