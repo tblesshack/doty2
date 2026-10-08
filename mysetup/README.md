@@ -142,3 +142,10 @@ anydesk, teamviewer, stunnel4/5 (replaced by sslh+xray fallback), hysteria2 (rep
 | udpgw.service, ssh-ws/proxy.service, ssh-ws/edu.service | /etc/systemd/system/ |
 | doty-linkfix, manager-wrapper-template.sh | /usr/local/bin/ |
 | verify-paths.sh | anywhere (test tool) |
+
+## Panel marker scheme (DO NOT STRIP # comments from xray-config.json!)
+The compiled managers grep `#` markers — json rewrites must preserve them:
+- protocol markers inside placeholder client: `#trojan` `#trojangrpc` `#vmess` `#vmessgrpc` `#vless` `#vlessgrpc`
+- user markers: vmess `### user expiry uuid` · vless `#& user expiry uuid` · trojan `#! user expiry pass`
+- panel appends `},{"id|password":"...","email":"..."}` chunks after markers
+- symptom if stripped: account LISTS show empty (create/renew/delete still half-work)
